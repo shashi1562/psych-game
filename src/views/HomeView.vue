@@ -137,8 +137,10 @@ async function join() {
   try {
     if (!authStore.user) await authStore.init()
     localStorage.setItem('psych_name', myName.value.trim())
-    const id = await gameStore.joinRoom({ code:roomCode.value, myName:myName.value.trim(), uid:authStore.user.uid })
-    router.push({ name:'lobby', params:{roomId:id} })
+    const { roomId, status } = await gameStore.joinRoom({ code:roomCode.value, myName:myName.value.trim(), uid:authStore.user.uid })
+    // If game already in progress, go straight to game view
+    const dest = (status && status !== 'lobby' && status !== 'final_results') ? 'game' : 'lobby'
+    router.push({ name: dest, params:{ roomId } })
   } catch(e) { err.value=e.message } finally { busy.value=false }
 }
 </script>

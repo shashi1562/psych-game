@@ -256,6 +256,15 @@ onMounted(async () => {
   if (!authStore.user) await authStore.init()
   gameStore.myUid = myUid.value
   if (!gameStore.room) gameStore.subscribe(roomId)
+
+  // Keep player marked as connected
+  gameStore.startHeartbeat(roomId, myUid.value)
+
+  // Host periodically checks for stale players
+  if (isHost.value) {
+    setInterval(() => gameStore.checkStalePages?.(roomId), 30000)
+  }
+
   onPhaseChange(room.value?.status)
 })
 
@@ -338,6 +347,8 @@ async function next() {
 
 onBeforeUnmount(() => {
   gameStore.stopTimer()
+  gameStore.stopHeartbeat()
+  gameStore.markDisconnected(roomId, myUid.value)
   revealTimers.forEach(clearTimeout)
 })
 </script>
