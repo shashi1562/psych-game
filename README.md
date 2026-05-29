@@ -4,8 +4,7 @@ A real-time multiplayer bluffing party game built with Vue 3 and Firebase.
 
 Everyone sees the same question. You write a fake answer to fool your friends. The more people you fool, the more points you score.
 
-**Live demo →** https://guessmynum.web.app
-
+**Play now →** https://shashi1562.github.io/psych-game/
 ---
 
 ## How It Works
